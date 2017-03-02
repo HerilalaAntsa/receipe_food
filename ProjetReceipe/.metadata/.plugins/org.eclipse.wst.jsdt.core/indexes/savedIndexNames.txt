@@ -1,0 +1,7 @@
+INDEX VERSION 1.3+D:\Dossier ANTSA\s6\Mr Naina\Projet_s6\ProjetReceipe\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+3117272210.index
+1820102258.index
+3641115172.index
+732333427.index
+1997570209.index
+871802502.index
