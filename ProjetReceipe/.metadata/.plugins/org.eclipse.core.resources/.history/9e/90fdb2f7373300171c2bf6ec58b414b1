@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="s6.ReceipeFood.modele.Produit" table="produit">
+        <meta attribute="class-description">
+            This class contains the produit detail.
+        </meta>
+        <id name="id" type="int" column="idproduit" insert="false" update="false"> 
+            <generator class="identity"/>
+        </id>
+        <property name="nom" column="nomprouit" type="string"/>
+        <many-to-one name="categorie" class="s6.ReceipeFood.modele.Categorie" column="idproduit" lazy="proxy" not-null="true" fetch="select"/>
+        
+        <bag name="composition" cascade="delete-orphan" fetch="select" inverse="true">
+	         <key column="idproduit" not-null="true"/>
+	         <one-to-many class="s6.ReceipeFood.modele.Composition"/>
+        </bag>
+    </class>
+</hibernate-mapping>

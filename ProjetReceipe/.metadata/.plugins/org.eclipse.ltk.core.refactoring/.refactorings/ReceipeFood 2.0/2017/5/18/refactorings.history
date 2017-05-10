@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;ReceipeFood 2.0/src/s6/ReceipeFood/modele/mappings/Composition.hbm .xml&apos; to &apos;Composition.hbm.xml&apos;" description="Rename resource &apos;Composition.hbm .xml&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/s6/ReceipeFood/modele/mappings/Composition.hbm .xml" name="Composition.hbm.xml" stamp="1494013299401" updateReferences="true"/>
+</session>

@@ -1,0 +1,186 @@
+package s6.ReceipeFood.dao;
+
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.exception.ConstraintViolationException;
+
+import s6.ReceipeFood.modele.BaseModel;
+import s6.ReceipeFood.modele.Categorie;
+import s6.ReceipeFood.modele.Composant;
+import s6.ReceipeFood.modele.Composition;
+import s6.ReceipeFood.modele.Produit;
+import s6.ReceipeFood.modele.Utilisateur;
+import s6.ReceipeFood.service.ServiceProduit;
+
+import java.util.List;
+
+
+public class HibernateDao {
+	public HibernateDao() {}
+	
+	private static class SingletonHolder
+	{		
+		private final static HibernateDao instance = new HibernateDao();
+	}
+ 
+	public static HibernateDao getInstance()
+	{
+		return SingletonHolder.instance;
+	}
+	
+    private SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+
+    public SessionFactory getSessionFactory() {
+        return sessionFactory;
+    }
+
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
+
+    public void save(BaseModel obj) throws Exception{
+        Session session = null;
+        Transaction tr=null;
+        try{
+            session = getSessionFactory().openSession();
+            tr=session.beginTransaction();
+            session.saveOrUpdate(obj);
+            tr.commit();
+        }catch (Exception ex){
+        	ex.printStackTrace();
+            if(tr!=null)
+                tr.rollback();
+            throw ex;
+        }
+    }
+    
+    public void update(BaseModel obj) throws Exception{
+        Session session = null;
+        Transaction tr=null;
+        try{
+            session = getSessionFactory().openSession();
+            tr=session.beginTransaction();
+            session.update(obj);
+            tr.commit();
+        }catch (Exception ex){
+        	ex.printStackTrace();
+            if(tr!=null)
+                tr.rollback();
+            throw ex;
+        }
+    }
+    
+    public void delete(BaseModel obj) throws Exception{
+        Session session = null;
+        Transaction tr=null;
+        try{
+            session = getSessionFactory().openSession();
+            tr=session.beginTransaction();
+            session.delete(obj);
+            tr.commit();
+        }catch (Exception ex){
+        	ex.printStackTrace();
+            if(tr!=null)
+                tr.rollback();
+            throw ex;
+        }
+    }
+    
+    public void save(BaseModel obj, Session session) throws Exception{
+        try{
+            session.saveOrUpdate(obj);
+        }catch (Exception ex){
+        	ex.printStackTrace();
+            throw ex;
+        }
+    }
+
+    public void findById(BaseModel obj) throws Exception{
+        Session session = null;
+        try{
+            session = getSessionFactory().openSession();
+            session.load(obj,obj.getId());
+        }catch (Exception ex){
+        	ex.printStackTrace();
+            throw ex;
+        }
+    }
+
+    public List<BaseModel> findAll(BaseModel obj)  throws Exception{
+        Session session = null;
+        try{
+            session = getSessionFactory().openSession();
+            Criteria criteria = session.createCriteria(obj.getClass());
+            return criteria.list();
+        }catch (Exception ex){
+        	ex.printStackTrace();
+            throw ex;
+        }
+    }
+    
+    public Utilisateur login(Utilisateur model)  throws Exception{
+        Session session = null;
+        try{
+            session = getSessionFactory().openSession();
+            Utilisateur user = session.createQuery("FROM Utilisateur "
+            		+ "WHERE email = :emailutilisateur AND password = :passwordutilisateur", model.getClass())
+            		.setParameter("emailutilisateur", model.getEmail())
+            		.setParameter("passwordutilisateur", model.getPassword()).uniqueResult();
+            return (Utilisateur)user;
+        }catch (Exception ex){
+            throw ex;
+        }finally {
+            if(session!=null)
+                session.close();
+        }
+    }
+    
+    public Composant findComposant(Composant model, String critere)  throws Exception{
+        Session session = null;
+        try{
+            session = getSessionFactory().openSession();
+            Composant composant = session.createQuery("FROM Composant "
+            		+ "WHERE nomcomposant = :nomcomposant", model.getClass())
+            		.setParameter("nomcomposant", critere).uniqueResult();
+            return (Composant)composant;
+        }catch (Exception ex){
+            throw ex;
+        }finally {
+            if(session!=null)
+                session.close();
+        }
+    }
+    
+    public List<Produit> rechercheByProduit(Produit model,String nomProduit)  throws Exception{
+        Session session = null;
+        try{
+            session = getSessionFactory().openSession();
+            return (List<Produit>) session.createQuery("FROM Produit "
+            		+ "WHERE nomproduit = :emailutilisateur", model.getClass())
+            		.setParameter("emailutilisateur", nomProduit).list();
+        }catch (Exception ex){
+            throw ex;
+        }finally {
+            if(session!=null)
+                session.close();
+        }
+    }
+    
+    public List<Produit> rechercheByComposant(Composition model,String nomProduit)  throws Exception{
+        Session session = null;
+        try{
+            session = getSessionFactory().openSession();
+            return (List<Produit>) session.createQuery("FROM Produit "
+            		+ "WHERE nomproduit = :emailutilisateur", model.getClass())
+            		.setParameter("emailutilisateur", nomProduit).list();
+        }catch (Exception ex){
+            throw ex;
+        }finally {
+            if(session!=null)
+                session.close();
+        }
+    }
+}

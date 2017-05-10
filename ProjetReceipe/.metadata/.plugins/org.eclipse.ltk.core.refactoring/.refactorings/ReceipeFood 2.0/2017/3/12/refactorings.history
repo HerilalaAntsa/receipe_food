@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;&apos; to &apos;s6.ReceipeFood.dao.ModelDAO.getListType(...)&apos;&#x0D;&#x0A;- Original project: &apos;ReceipeFood 2.0&apos;&#x0D;&#x0A;- Destination element: &apos;s6.ReceipeFood.dao.ModelDAO.getListType(...)&apos;&#x0D;&#x0A;- Original element: &apos;s6.ReceipeFood.dao.ModelDAO.creer(...)&apos;" description="Copy method" destination="/src&lt;s6.ReceipeFood.dao{ModelDAO.java[ModelDAO~getListType~QField;" element1="/src&lt;s6.ReceipeFood.dao{ModelDAO.java[ModelDAO~creer~QResultSet;~QBaseModel;~QClasse;~QBoolean;" flags="589830" id="org.eclipse.jdt.ui.copy" members="1" policy="org.eclipse.jdt.ui.copyMembers" stamp="1490184510794" version="1.0"/>
+</session>

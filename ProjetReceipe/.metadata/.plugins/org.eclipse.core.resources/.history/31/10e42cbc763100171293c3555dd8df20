@@ -1,0 +1,23 @@
+package s6.ReceipeFood.modele;
+
+public class Composant extends BaseModel{
+	String nom;
+	List<Produit> ltProduit;
+	
+	public Composant() {}
+
+	public Composant(int id, String nom) {
+		super(id);
+		this.setNom(nom);
+	}
+
+	public String getNom() {
+		return nom;
+	}
+
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+	
+	
+}

@@ -1,0 +1,35 @@
+package s6.ReceipeFood.modele;
+
+import java.util.List;
+import java.util.Vector;
+
+public class Composant extends BaseModel{
+	String nom;
+	int quantite;
+	List<Produit> ltProduit = new Vector<Produit>();
+	
+	public Composant() {}
+
+	public Composant(int id, String nom) {
+		super(id);
+		this.setNom(nom);
+	}
+
+	public String getNom() {
+		return nom;
+	}
+
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+
+	public List<Produit> getLtProduit() {
+		return ltProduit;
+	}
+
+	public void setLtProduit(List<Produit> ltProduit) {
+		this.ltProduit = ltProduit;
+	}
+	
+	
+}

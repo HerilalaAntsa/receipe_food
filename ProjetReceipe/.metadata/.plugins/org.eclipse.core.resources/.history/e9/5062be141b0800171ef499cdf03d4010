@@ -1,0 +1,164 @@
+package s6.ReceipeFood.generateur;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
+import java.util.Vector;
+
+public class GenererDAO {
+    private String path = "src/s6/ReceipeFood/modele";
+    private String newPath = "src/s6/ReceipeFood/dao";
+    
+    public GenererDAO() {}
+
+    public GenererDAO(String path, String newPath) {
+        this.setPath(path);
+        this.setNewPath(newPath);
+    }
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
+	}
+
+	public String getNewPath() {
+		return newPath;
+	}
+
+	public void setNewPath(String newPath) {
+		this.newPath = newPath;
+	}
+
+	public boolean isAttribut(String s)
+    {
+        boolean result = false;
+        String[] listeJava = {"byte","short","float","char","boolean","String","int","double","Date","long"};
+        for(int i=0;i<listeJava.length;i++)
+        {
+            if(s.compareTo(listeJava[i])==0)
+            {
+                result = true;
+                break;
+            }
+        }
+        return result;
+    }
+    
+    public void generate(File path)
+    {
+        BufferedReader br = null;
+        FileReader filereader = null;
+        File [] ltFile = path.listFiles();
+        try{ 
+        	for(File file : ltFile){
+        		filereader = new FileReader(file);
+                br = new BufferedReader(filereader); 
+        		Classe classe = new Classe();
+                classe.setNom(file.getName().replace(".java", ""));
+                classe.setNomDao(file.getName().replace(".java", "DAO"));
+                classe.setNomFichier(file.getName().replace(".java", "DAO.java"));
+                List<String> ltAttribut = new Vector<String>(); 
+//                System.out.println(nomClasse);
+                String line;
+                String res = "";
+                File newFile = new File(classe.getNomFichier());
+                while ((line = br.readLine()) != null) {
+                	
+//                	if(line.trim().startsWith("public class")){
+//	                    nomClasse = line.substring(line.indexOf("public class"));
+//	                    String[] re = nomClasse.split(" ");
+//	                    nomClasse = re[0];
+//	                    nomClasse += nomClasse+"DAO";
+//	                }
+
+                	
+                    if(line.trim().startsWith("private")){
+                        String[] re = line.trim().split(" ");
+                        if(this.isAttribut(re[1])){
+                        	ltAttribut.add(re[1]+" "+re[2]);
+                        }
+                    }
+                }
+                classe.setLtAttribut(ltAttribut);
+                
+                newFile.createNewFile();
+                FileWriter writer =new FileWriter(newFile);
+                writer.write("class"+classe.getNom());
+                
+                if(filereader==null) filereader.close();
+        	}
+            br.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+//        return res;
+    }
+    
+    /*public void generer()
+    {
+        try{
+            String[] f = this.file.split("/");
+            String[] nomFichier = f[f.length-1].split(".");
+            String[] attribut = this.getAttribut().split(";");
+            PrintWriter writer = new PrintWriter(nomFichier[0]+"Dao.java", "UTF-8");
+            writer.println("import java.sql.*;");
+            writer.println("import java.lang.*;");
+            writer.println("");
+            writer.println("public class "+nomFichier[0]+"Dao {");
+            writer.println("    public void save("+nomFichier[0]+" objet) {");
+            writer.println("        Connection conn = null;");
+            writer.println("        PreparedStatement pr=null;");
+            writer.println("        try{");
+            writer.println("        ");
+            writer.println("        pr = conn.prepareStatement('insert into '"+nomFichier[1]+" ("+attribut[0]+","+attribut[]+"))");
+            writer.close();
+        } catch (IOException e) {
+           // do something
+        }
+    }*/
+    
+    
+    public static void main(String[] args) {
+        /*BufferedReader br = null;
+        try{ 
+            br = new BufferedReader(new FileReader("C:/Users/UTILISATEUR/Documents/NetBeansProjects/GenererDao/test.txt"));          
+            String line;
+            while ((line = br.readLine()) != null) 
+            {
+               // process the line.
+                if(line.startsWith("Kevin"))
+                {
+                    String[]res = line.split(" ");
+                    System.out.println(res[1]);
+                }
+            }
+            br.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }*/
+//        try(FileWriter fw = new FileWriter("outfilename", true);
+//            BufferedWriter bw = new BufferedWriter(fw);
+//            PrintWriter out = new PrintWriter(bw))
+//        {
+//            out.println("the text");
+//            //more code
+//            out.println("more text");
+//            //more code
+//        } catch (IOException e) {
+//            //exception handling left as an exercise for the reader
+//        }
+        GenererDAO dao = new GenererDAO();
+        dao.generate(new File("src/s6/ReceipeFood/modele"));
+    }
+}

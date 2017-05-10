@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="s6.ReceipeFood.modele.Utilisateur" table="utilisateur">
+        <meta attribute="class-description">
+            This class contains the utilisateur detail.
+        </meta>
+        <id name="id" type="int" column="IDUTILISATEUR">
+            <generator class="identity"/>
+        </id>
+        <property name="nom" column="NOMUTILISATEUR" type="string"/>
+        <property name="prenom" column="PRENOMUTILISATEUR" type="string"/>
+        <property name="dateNaissance" column="DATENAISSANCE" type="date"/>
+        <property name="sexe" column="SEXE" type="string"/>
+        <property name="telephone" column="TELEPHONE" type="string"/>
+        <property name="adresse" column="ADRESSE" type="string"/>
+        <property name="email" column="EMAIL" type="string"/>
+        <property name="password" column="PASSWORD" type="string"/>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="s6.ReceipeFood.modele.Composition" table="composition">
+        <meta attribute="class-description">
+            This class contains the composition detail.
+        </meta>
+        <id name="id" type="int" column="IDCOMPOSITION">
+            <generator class="identity"/>
+        </id>
+        <many-to-one name="composant" class="s6.ReceipeFood.modele.Composant" column="idcomposant" lazy="proxy" not-null="true" fetch="select"/>
+		<many-to-one name="produit" class="s6.ReceipeFood.modele.Produit" column="idproduit" lazy="proxy" not-null="true" fetch="select"/>
+        <property name="quantite" column="quantite" type="float" not-null="false"/>
+<!--         <property name="unite" column="unite" type="org.hibernate.type.EnumType" not-null="false"/> -->
+        <property name="unite">
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">s6.ReceipeFood.modele.Unite</param>
+                <param name="useNamed">false</param>
+                <param name="type">12</param>
+            </type>
+        </property>
+    </class>
+</hibernate-mapping>

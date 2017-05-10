@@ -1,0 +1,12 @@
+127.0.0.1 - - [09/May/2017:14:43:37 +0300] "GET / HTTP/1.1" 404 1005
+0:0:0:0:0:0:0:1 - - [09/May/2017:14:43:40 +0300] "GET /ReceipeFood_2.0/HelloWorld.jsp HTTP/1.1" 200 267
+0:0:0:0:0:0:0:1 - - [09/May/2017:14:45:04 +0300] "GET /ReceipeFood_2.0/HelloWorld.jsp HTTP/1.1" 200 267
+0:0:0:0:0:0:0:1 - - [09/May/2017:14:45:17 +0300] "GET /ReceipeFood_2.0/HelloWorld.jsp HTTP/1.1" 200 267
+127.0.0.1 - - [09/May/2017:14:46:04 +0300] "GET / HTTP/1.1" 404 1005
+127.0.0.1 - - [09/May/2017:14:47:57 +0300] "GET / HTTP/1.1" 404 1005
+0:0:0:0:0:0:0:1 - - [09/May/2017:14:47:59 +0300] "GET /ReceipeFood_2.0/HelloWorld.jsp HTTP/1.1" 200 274
+0:0:0:0:0:0:0:1 - - [09/May/2017:14:48:50 +0300] "GET /ReceipeFood_2.0/HelloWorld HTTP/1.1" 200 276
+127.0.0.1 - - [09/May/2017:15:38:40 +0300] "GET / HTTP/1.1" 404 1005
+0:0:0:0:0:0:0:1 - - [09/May/2017:15:38:41 +0300] "GET /ReceipeFood_2.0/HelloWorld.jsp HTTP/1.1" 200 274
+0:0:0:0:0:0:0:1 - - [09/May/2017:15:38:52 +0300] "GET /ReceipeFood_2.0/HelloWorld. HTTP/1.1" 404 1059
+0:0:0:0:0:0:0:1 - - [09/May/2017:15:39:01 +0300] "GET /ReceipeFood_2.0/HelloWorld HTTP/1.1" 200 288

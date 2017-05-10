@@ -1,0 +1,10 @@
+package s6.ReceipeFood.generateur;
+
+import java.util.List;
+import java.util.Vector;
+
+public class Classe {
+	String nom;
+	String nomDao;
+	List<String> ltAttribut = new Vector<String>();
+}

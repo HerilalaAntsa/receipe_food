@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="s6.ReceipeFood.modele.Composant" table="composant">
+        <meta attribute="class-description">
+            This class contains the composant detail.
+        </meta>
+        <id name="id" type="int" column="IDCOMPOSANT">
+            <generator class="identity"/>
+        </id>
+        <property name="nom" column="nomcomposant" type="string"/>
+        
+    	<bag name="composition" cascade="delete-orphan" table="composition" fetch="select" inverse="true">
+	         <key column="idcomposant" not-null="true"/>
+	         <one-to-many class="s6.ReceipeFood.modele.Composition"/>
+        </bag>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,31 @@
+package s6.ReceipeFood.service;
+
+import java.util.List;
+
+import s6.ReceipeFood.dao.ComposantDAO;
+import s6.ReceipeFood.modele.Composant;
+import s6.ReceipeFood.service.ServiceCategorie.SingletonHolder;
+
+public class ServiceComposant {
+	public ServiceComposant() {}
+	
+	private static class SingletonHolder
+	{		
+		private final static ServiceComposant instance = new ServiceComposant();
+	}
+ 
+	public static ServiceComposant getInstance()
+	{
+		return SingletonHolder.instance;
+	}
+	
+	ComposantDAO composantDAO = new ComposantDAO();
+	
+	public List<Composant> find() throws Exception{
+		return this.composantDAO.findAll();
+	}
+	
+	public Composant findById(int i) throws Exception{
+		return this.composantDAO.findById(i);
+	}
+}

@@ -1,0 +1,303 @@
+package s6.ReceipeFood.dao; 
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.sql.Connection; 
+import java.sql.PreparedStatement; 
+import java.sql.ResultSet; 
+import java.sql.Date; 
+import java.util.List; 
+import java.util.Vector;
+
+import s6.ReceipeFood.generateur.Classe;
+import s6.ReceipeFood.generateur.GenererDAO;
+import s6.ReceipeFood.generateur.Utilitaire;
+import s6.ReceipeFood.modele.*; 
+
+
+public class ModelDAO {
+    private String save = "INSERT INTO %s (%s) VALUES (%s);";
+    private String findAll = "SELECT * FROM %s;";
+    private String findById = "SELECT * FROM %s WHERE ID%s = ?;";
+    private String update = "UPDATE %s SET %s WHERE ID%s = ?;";
+    private String delete = "DELETE FROM %s WHERE ID%s = ?;";
+    
+    private String setter = "statement.set%s(%s, objet.get%s());";
+    
+    
+    
+	public void save(BaseModel objet) throws Exception {
+		Classe classe = new Classe();
+		
+		classe.setNom(objet.getClass().getSimpleName());
+		
+		Field[] listAttribut = objet.getClass().getDeclaredFields();
+//		int i = 0;
+		for(Field field : listAttribut){
+            if(field.getType().getSimpleName().startsWith("List")) continue;
+			classe.addAttribut(field.getType().getSimpleName(), field.getName());
+//			System.out.println(classe.getLtAttribut().get(i)[0]+" "+classe.getLtAttribut().get(i)[1]);
+//			i++;
+		}
+       
+//		Generation query 
+    	String[] list = {"",""};
+        	for(String[] s : classe.getLtAttribut()){
+        		if(s[1].compareToIgnoreCase("id")==0)continue;
+            	if(!GenererDAO.isAttribut(s[0])){
+            		list[0] += "ID"+s[1].toUpperCase();
+            		list[0] += ", ";
+            		list[1] += "?, ";
+            	}else{
+            		list[0] += s[1].toUpperCase();
+            		list[0] += ", ";
+            		list[1] += "?, ";
+            	}
+        	}
+        list[0] = list[0].substring(0, list[0].lastIndexOf(","));
+        list[1] = list[1].substring(0, list[1].lastIndexOf(","));
+        
+        String query = String.format(this.save, classe.getNom().toUpperCase(), list[0], list[1]);
+        
+        Connection conn = null;
+        PreparedStatement statement=null;
+        try{
+        	conn = UtilDB.getConnPostgre();
+        	statement = conn.prepareStatement(query);
+
+//        	Execution statement.set...(...)
+            int j = 1;    
+            for(String[] s : classe.getLtAttribut()){
+        		if(s[1].compareToIgnoreCase("id")==0) continue;
+        			
+            	Object get = Utilitaire.executerMethode(objet, "get"+s[1].replaceFirst(String.valueOf(s[1].charAt(0)), String.valueOf(s[1].charAt(0)).toUpperCase()), null);
+
+            	if(GenererDAO.isAttribut(s[0])){
+        			if(get instanceof java.util.Date){
+        				statement.setDate(j++, new java.sql.Date(((java.util.Date)get).getTime()));
+        			}else{
+        				statement.setObject(j++, get);
+        			}
+            	}else{
+            		get = Utilitaire.executerMethode(objet, "get"+s[1].replaceFirst(String.valueOf(s[1].charAt(0)), String.valueOf(s[1].charAt(0)).toUpperCase()), null);
+        			System.out.println(get.getClass().getName());
+        			Categorie g = (Categorie)get;
+        			System.out.println(g.getId());
+            		get = Utilitaire.executerMethode(get, "getId", null);
+        			
+        			statement.setInt(j++, (int) get);
+            	}
+            }
+        	
+			statement.execute();
+			conn.commit();
+		}catch(Exception e){ 
+			conn.rollback(); 
+			e.printStackTrace(); 
+			throw new Exception(classe.getNom()+" contenant des erreurs, création échouée."); 
+		}finally { 
+			if(statement != null) statement.close(); 
+			if(conn != null) conn.close(); 
+		} 
+
+	}
+	
+    public void update(Categorie objet) throws Exception {
+		Classe classe = new Classe();
+		
+		classe.setNom(objet.getClass().getSimpleName());
+		
+		Field[] listAttribut = objet.getClass().getDeclaredFields();
+//		int i = 0;
+		for(Field field : listAttribut){
+			classe.addAttribut(field.getType().getSimpleName(), field.getName());
+//			System.out.println(classe.getLtAttribut().get(i)[0]+" "+classe.getLtAttribut().get(i)[1]);
+//			i++;
+		}
+		
+    	String list = "";
+        	for(String[] s : classe.getLtAttribut()){
+        		if(s[1].compareToIgnoreCase("id")==0) continue;
+            	if(!GenererDAO.isAttribut(s[0])){
+            		list += "ID"+s[1].toUpperCase();
+            		list += " = ?, ";
+            	}else{
+            		list += s[1].toUpperCase();
+            		list += " = ?, ";
+            	}
+        	}
+        list = list.substring(0, list.lastIndexOf(","));
+        String query = String.format(this.update, classe.getNom().toUpperCase(), list, classe.getNom().toUpperCase());
+
+        Connection conn = null;
+        PreparedStatement statement=null;
+        try{
+        	conn = UtilDB.getConnPostgre();
+        	statement = conn.prepareStatement(query);
+        	
+//        	Execution statement.set...(...)
+            int j = 1;    
+            for(String[] s : classe.getLtAttribut()){
+        		if(s[1].compareToIgnoreCase("id")==0) continue;
+        			
+            	Object get = Utilitaire.executerMethode(objet, "get"+s[1].replaceFirst(String.valueOf(s[1].charAt(0)), String.valueOf(s[1].charAt(0)).toUpperCase()), null);
+            	
+            	if(GenererDAO.isAttribut(s[0])){
+                	Utilitaire.executerMethode(
+                			statement, 
+                			"set"+s[0].replaceFirst(String.valueOf(s[0].charAt(0)), String.valueOf(s[0].charAt(0)).toUpperCase()), 
+                			new Object[]{j++, get}
+                			);
+            	}else{
+            		get = Utilitaire.executerMethode(objet, "get"+s[1].replaceFirst(String.valueOf(s[1].charAt(0)), String.valueOf(s[1].charAt(0)).toUpperCase())+"().getId", null);
+                	Utilitaire.executerMethode(
+                			statement, 
+                			"setInt", 
+                			new Object[]{j++, get}
+                			);
+            	}
+            }
+            Object get = Utilitaire.executerMethode(objet, "getId", null);
+        	Utilitaire.executerMethode(
+        			statement, 
+        			"setInt", 
+        			new Object[]{j++, get}
+        			);
+        	
+			statement.execute();
+			conn.commit();
+		}catch(Exception e){ 
+			conn.rollback(); 
+			e.printStackTrace(); 
+			throw new Exception(classe.getNom()+" contenant des erreurs, création échouée."); 
+		}finally { 
+			if(statement != null) statement.close(); 
+			if(conn != null) conn.close(); 
+		} 
+	}
+    
+    public void delete(Categorie objet) throws Exception {
+		Classe classe = new Classe();
+		
+		classe.setNom(objet.getClass().getSimpleName());
+		
+		Field[] listAttribut = objet.getClass().getDeclaredFields();
+//		int i = 0;
+		for(Field field : listAttribut){
+			classe.addAttribut(field.getType().getSimpleName(), field.getName());
+//			System.out.println(classe.getLtAttribut().get(i)[0]+" "+classe.getLtAttribut().get(i)[1]);
+//			i++;
+		}
+		
+		String query = String.format(this.delete, classe.getNom().toUpperCase(), classe.getNom().toUpperCase());
+		
+        Connection conn = null;
+        PreparedStatement statement=null;
+        try{
+        	conn = UtilDB.getConnPostgre();
+        	statement = conn.prepareStatement(query);
+        	
+//        	Execution statement.set...(...)
+            int j = 1;  
+            Object get = Utilitaire.executerMethode(objet, "getId", null);
+        	Utilitaire.executerMethode(
+        			statement, 
+        			"setInt", 
+        			new Object[]{j++, get}
+        			);
+        	
+			statement.execute();
+			conn.commit();
+		}catch(Exception e){ 
+			conn.rollback(); 
+			e.printStackTrace(); 
+			throw new Exception(classe.getNom()+" contenant des erreurs, création échouée.");  
+		}finally { 
+			if(statement != null) statement.close(); 
+			if(conn != null) conn.close(); 
+		} 
+
+	}
+    public List<Categorie> findAll(Categorie objet) throws Exception {
+		Classe classe = new Classe();
+		
+		classe.setNom(objet.getClass().getSimpleName());
+		
+		Field[] listAttribut = objet.getClass().getDeclaredFields();
+//		int i = 0;
+		for(Field field : listAttribut){
+			classe.addAttribut(field.getType().getSimpleName(), field.getName());
+//			System.out.println(classe.getLtAttribut().get(i)[0]+" "+classe.getLtAttribut().get(i)[1]);
+//			i++;
+		}
+		
+		String query = String.format(this.findAll, classe.getNom().toUpperCase());
+		
+        Connection conn = null;
+        PreparedStatement statement=null;
+        try{
+        	conn = UtilDB.getConnPostgre();
+        	statement = conn.prepareStatement(query);
+			return DBToCategorie(statement.executeQuery());
+		}catch(Exception e){ 
+			conn.rollback(); 
+			e.printStackTrace(); 
+			throw new Exception(classe.getNom()+" contenant des erreurs, création échouée."); 
+		}finally { 
+			if(statement != null) statement.close(); 
+			if(conn != null) conn.close(); 
+		} 
+
+	}
+    public Categorie findById(int id) throws Exception {
+        String query = "SELECT * FROM CATEGORIE WHERE IDCATEGORIE = ?;";
+        Connection conn = null;
+        PreparedStatement statement=null;
+        try{
+        	conn = UtilDB.getConnPostgre();
+        	statement = conn.prepareStatement(query);
+			statement.setInt(1, id);
+			ResultSet res = statement.executeQuery();
+			Categorie model = null;
+		if(res.next()){ 
+
+	return this.creerCategorie(res);
+		} 
+	throw new Exception("Categorie introuvable");
+		}catch(Exception e){ 
+			conn.rollback(); 
+			e.printStackTrace(); 
+			throw new Exception(classe.getNom()+" contenant des erreurs, création échouée."); 
+		}finally { 
+			if(statement != null) statement.close(); 
+			if(conn != null) conn.close(); 
+		} 
+
+	}
+	public List<Categorie> DBToCategorie(ResultSet res)throws Exception{ 
+		try{ 
+			List<Categorie> model = new Vector<Categorie>(); 
+			while(res.next()){ 
+				model.add(this.creerCategorie(res)); 
+			} 
+			return model; 
+		}catch(Exception e){ 
+			throw e; 
+		}finally { 
+			if(res != null) res.close(); 
+		} 
+	} 
+
+	public Categorie creer(ResultSet res) throws Exception{ 
+		 return new Categorie( 
+			res.getInt("IDCATEGORIE"),res.getString("NOM")  
+		); 
+	}
+	
+	public static void main(String[] args) throws Exception {
+		ModelDAO modeldao = new ModelDAO();
+		Produit model = new Produit(3, "banana");
+		model.setCategorie(new Categorie(1, ""));
+		modeldao.save(model);
+	}
+}

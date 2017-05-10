@@ -1,0 +1,25 @@
+package s6.ReceipeFood.service;
+
+import java.util.List;
+
+import s6.ReceipeFood.dao.HibernateDao;
+import s6.ReceipeFood.dao.ProduitDAO;
+import s6.ReceipeFood.dao.UtilisateurDAO;
+import s6.ReceipeFood.modele.Utilisateur;
+
+public class ServiceUtilisateur {
+	UtilisateurDAO utilisateurDAO = new UtilisateurDAO();
+
+	public  List<Utilisateur> find() throws Exception{
+		return utilisateurDAO.findAll();
+	}
+	
+	public  Utilisateur findById(int i) throws Exception{
+		return utilisateurDAO.findById(i);
+	}
+	
+	public Utilisateur login(Utilisateur model) throws Exception{
+		HibernateDao hibernateDao = new HibernateDao();
+		return hibernateDao.login(model);
+	}
+}
