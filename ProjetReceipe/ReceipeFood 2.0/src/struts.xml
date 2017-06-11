@@ -4,24 +4,109 @@
    "http://struts.apache.org/dtds/struts-2.0.dtd">
 <struts>
    <constant name="struts.devMode" value="true" />
+   <include file="strutsAdmin.xml"/>
    <package name="helloworld" extends="struts-default">
+        <interceptors>
+            <interceptor class="s6.ReceipeFood.interceptor.LoginInterceptor" name="loginInterceptor">
+        	</interceptor>
+            <interceptor-stack name="loginStack">
+                    <interceptor-ref name="loginInterceptor" />
+                    <interceptor-ref name="defaultStack" />
+            </interceptor-stack>
+        </interceptors>
      
-      <action name="HelloWorld" 
-            class="s6.ReceipeFood.action.HelloWorldAction" 
-            method="execute">
-            <result name="success">/HelloWorld.jsp</result>
+      <action name="detailRecette" 
+            class="s6.ReceipeFood.action.ProduitAction" 
+            method="detailProduit">
+            <result name="success">/detailRecette.jsp</result>
+            <result name="error">/404.html</result>
+            <result name="login">Login.jsp</result>
       </action>
       
-<!--      <action name="inscription" 
-            class="s6.patisserie.action.InscriptionAction" 
-            method="execute">
-            <result name="success">/Content.jsp</result>
+      <!-- Lister les recettes -->
+      <action name="listeRecette"             
+          class="s6.ReceipeFood.action.ProduitAction" 
+            method="listerProduit">
+            <interceptor-ref name="defaultStack"/>
+            <param name="classe">s6.ReceipeFood.modele.Produit</param>
+            <result name="success">/listeProduit.jsp</result>
+            <result name="none" type="redirectAction">listeRecette</result>
+            <result name="error">/404.html</result>
+            <result name="login">Login.jsp</result>
       </action>
       
-      <action name="accesCompte" 
-            class="s6.patisserie.action.AccesCompteAction" 
-            method="execute">
-            <result name="success">/login.jsp</result>
-      </action>-->
+      <action name="login" 
+            class="s6.ReceipeFood.action.UtilisateurAction" 
+            method="login">
+            <result name="success">/accueil.jsp</result>
+            <result name="login">Login.jsp</result>
+      </action>
+      
+      <action name="accueil" 
+            class="s6.ReceipeFood.action.CrudAction" 
+            method="start">
+            <result>/accueil.jsp</result>
+      </action>
+      
+      <action name="signUp" 
+            class="s6.ReceipeFood.action.UtilisateurAction" 
+            method="inscription">
+            <result name="success">/accueil.jsp</result>
+            <result name="error">/404.html</result>
+            <result name="login">Login.jsp</result>
+      </action>
+      
+      <action name="logOut" 
+            class="s6.ReceipeFood.action.UtilisateurAction" 
+            method="deconnexion">
+            <result>/Login.jsp</result>
+      </action>
+      
+      <!-- AJOUT PRODUIT -->
+      <action name="ajoutRecette" 
+            class="s6.ReceipeFood.action.AjoutProduitAction" 
+            method="ajoutProduit">
+            <interceptor-ref name="loginStack" />
+            <result name="success">/ajoutRecette.jsp</result>
+            <result name="error">/ajoutRecette.jsp</result>
+            <result name="login">Login.jsp</result>
+      </action>
+      
+      <action name="detailAjout" 
+            class="s6.ReceipeFood.action.AjoutProduitAction" 
+            method="ajoutComposant">
+            <interceptor-ref name="loginStack" />
+            <result name="success">/detailAjout.jsp</result>
+            <result name="error">/ajoutRecette.jsp</result>
+            <result name="login">Login.jsp</result>
+      </action>
+      
+      <action name="saveRecette" 
+            class="s6.ReceipeFood.action.AjoutProduitAction" 
+            method="save">
+            <interceptor-ref name="loginStack" />
+            <result name="success" type="redirectAction">listeRecette</result>
+            <result name="error">/ajoutRecette.jsp</result>
+            <result name="login">Login.jsp</result>
+      </action>
+      
+      <!-- RECHERCHE -->
+      <action name="Recherche" 
+            class="s6.ReceipeFood.action.ProduitAction" 
+            method="rechercher">
+            <interceptor-ref name="defaultStack" />
+            <param name="classe">s6.ReceipeFood.modele.ProduitVue</param>
+            <result name="success">/listeProduit.jsp</result>
+            <result name="none" type="redirectAction">Recherche</result>
+            <result name="error" type="redirectAction">/aucun</result>
+            <result name="login">Login.jsp</result>
+      </action>
+      
+      <action name="aucun" 
+            class="s6.ReceipeFood.action.ProduitAction" 
+            method="aucunResultat">
+            <result>/accueil.jsp</result>
+      </action>
+      
    </package>
 </struts>

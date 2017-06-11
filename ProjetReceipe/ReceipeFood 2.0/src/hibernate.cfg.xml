@@ -25,6 +25,7 @@
         <mapping resource="s6/ReceipeFood/modele/mappings/Produit.hbm.xml"/>
         <mapping resource="s6/ReceipeFood/modele/mappings/Utilisateur.hbm.xml"/>
         <mapping resource="s6/ReceipeFood/modele/mappings/Composition.hbm.xml"/>
+        <mapping resource="s6/ReceipeFood/modele/mappings/Administrateur.hbm.xml"/>
 
     </session-factory>
 

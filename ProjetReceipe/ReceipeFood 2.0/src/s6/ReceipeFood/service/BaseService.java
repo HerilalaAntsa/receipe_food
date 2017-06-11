@@ -1,9 +1,12 @@
 package s6.ReceipeFood.service;
+import java.util.List;
+
 import s6.ReceipeFood.dao.HibernateDao;
 import s6.ReceipeFood.modele.BaseModel;
+import s6.ReceipeFood.modele.BaseModelePagination;
 
 public class BaseService {
-	private HibernateDao dao;
+	private HibernateDao dao; // = new HibernateDao();
 	private BaseService(){
 		if(dao == null) dao = new HibernateDao();
 	}
@@ -24,8 +27,22 @@ public class BaseService {
 	}
 
 	public void save(BaseModel model) throws Exception{;
-	this.getDao().save(model);
+		this.getDao().save(model);
 	}
+	public List<BaseModel> getAll(BaseModel model) throws Exception{
+		try{
+			return this.getDao().findAll(model);
+		}catch(Exception e){
+			throw new Exception("Element introuvable, valeur incorrecte");
+		}
+	}	
+	public void getAll(BaseModelePagination model) throws Exception{
+		try{
+			this.getDao().findAll(model);
+		}catch(Exception e){
+			throw new Exception("Element introuvable, valeur incorrecte");
+		}
+	}	
 	public BaseModel get(String idBase, BaseModel model) throws Exception{
 		try{
 			int id = Integer.parseInt(idBase.trim());
@@ -36,8 +53,9 @@ public class BaseService {
 			throw new Exception("Element introuvable, valeur incorrecte");
 		}
 	}	
-	public void delete(String idBase, BaseModel base) throws Exception{
-		this.getDao().delete(get(idBase, base));
+	public void delete(BaseModel base) throws Exception{
+		this.getDao().findById(base);
+		this.getDao().delete(base);
 	}
 	public void update(BaseModel model) throws Exception{
 		this.getDao().update(model);

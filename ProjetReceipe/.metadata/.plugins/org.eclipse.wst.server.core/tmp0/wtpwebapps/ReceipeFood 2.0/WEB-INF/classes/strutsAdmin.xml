@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+   "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+   "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+   <constant name="struts.devMode" value="true" />
+   <constant name="struts.enable.SlashesInActionNames" value="true" />
+   <package name="admin" extends="struts-default"  namespace="/administrateur">
+       
+        <interceptors>
+            <interceptor class="s6.ReceipeFood.interceptor.LoginAdminInterceptor" name="loginAdminInterceptor">
+        	</interceptor>
+            <interceptor-stack name="adminStack">
+                    <interceptor-ref name="loginAdminInterceptor" />
+                    <interceptor-ref name="defaultStack" />
+            </interceptor-stack>
+        </interceptors>
+     
+ 
+      <!-- ADMINISTRATEUR -->
+      
+     <action name="accueilAdmin" 
+            class="s6.ReceipeFood.action.AdministrateurAction" 
+            method="login">
+            <result name="success" type="redirectAction">Categorie</result>
+            <result name="error">/administrateur/login.jsp</result>
+            <result name="login">/administrateur/login.jsp</result>
+      </action>
+      
+      <action name="Accueil" 
+            class="s6.ReceipeFood.action.CrudAction" 
+            method="start">
+            <interceptor-ref name="adminStack"/>
+            <result name="success">/administrateur/index.html</result>
+            <result name="error">/404.html</result>
+            <result name="login">/administrateur/login.jsp</result>
+      </action>
+      
+      <action name="Categorie" 
+            class="s6.ReceipeFood.action.CrudAction" 
+            method="list">
+            <interceptor-ref name="adminStack"/>
+            <param name="classe">s6.ReceipeFood.modele.Categorie</param>
+            <result name="success">/administrateur/categorie/listeCategorie.jsp</result>
+            <result name="error">/404.html</result>
+            <result name="login">/administrateur/login.jsp</result>
+      </action>
+      
+      <action name="Categorie/Ajout" 
+            class="s6.ReceipeFood.action.CrudAction" 
+            method="start">
+            <interceptor-ref name="adminStack"/>
+            <result name="success">/administrateur/categorie/ajoutCategorie.jsp</result>
+            <result name="error">/404.html</result>
+            <result name="login">/administrateur/login.jsp</result>
+      </action>
+      
+      <action name="Categorie/Modifier" 
+            class="s6.ReceipeFood.action.CategorieAction" 
+            method="detailCategorie">
+            <interceptor-ref name="adminStack"/>
+            <result name="success">/administrateur/categorie/modifierCategorie.jsp</result>
+            <result name="error">/404.html</result>
+            <result name="login">/administrateur/login.jsp</result>
+      </action>
+      
+      <action name="ajouterCategorie" 
+            class="s6.ReceipeFood.action.CategorieAction" 
+            method="addCategorie">
+            <interceptor-ref name="adminStack"/>
+            <result name="success" type="redirectAction">Categorie</result>
+            <result name="error">/404.html</result>
+            <result name="login">/administrateur/login.jsp</result>
+      </action>
+            
+      <action name="modifierCategorie" 
+            class="s6.ReceipeFood.action.CategorieAction" 
+            method="updateCategorie">
+            <interceptor-ref name="adminStack"/>
+            <result name="success" type="redirectAction">Categorie</result>
+            <result name="error">/404.html</result>
+            <result name="login">/administrateur/login.jsp</result>
+      </action>
+      
+      <!-- PRODUIT -->
+      
+      <action name="Produit" 
+            class="s6.ReceipeFood.action.CrudAction" 
+            method="list">
+            <interceptor-ref name="adminStack"/>
+            <param name="classe">s6.ReceipeFood.modele.ProduitVue</param>
+            <result name="success">/administrateur/produit/listeProduit.jsp</result>
+            <result name="error">/404.html</result>
+            <result name="login">/administrateur/login.jsp</result>
+      </action>
+      
+      <action name="Produit/Supprimer" 
+            class="s6.ReceipeFood.action.CrudAction" 
+            method="delete">
+            <interceptor-ref name="adminStack"/>
+            <param name="classe">s6.ReceipeFood.modele.Produit</param>
+            <result name="success" type="redirectAction">Produit</result>
+            <result name="error">/404.html</result>
+            <result name="login">/administrateur/login.jsp</result>
+      </action>
+      
+      <!--  -->
+      
+      <action name="logOutAdmin" 
+            class="s6.ReceipeFood.action.AdministrateurAction" 
+            method="deconnexion">
+            <result>/administrateur/Login.jsp</result>
+      </action>
+      
+      <action name="Administrateur/Categorie" 
+            class="s6.ReceipeFood.action.CrudAction" 
+            method="list">
+            <interceptor-ref name="adminStack"/>
+            <param name="classe">s6.suiviRegime.modele.Categorie</param>
+            <result name="success">/administrateur/listeCategorie.jsp</result>
+            <result name="none" type="redirectAction">Administrateur/Categorie/Liste</result>
+            <result name="error">404.html</result>
+            <result name="login" type="redirectAction">Administrateur/Connexion</result>
+      </action>
+      
+   </package>
+</struts>

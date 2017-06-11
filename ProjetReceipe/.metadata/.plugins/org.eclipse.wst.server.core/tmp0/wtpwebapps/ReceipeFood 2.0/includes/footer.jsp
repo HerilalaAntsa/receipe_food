@@ -11,9 +11,13 @@
     </div>
 </div>
 </div>
-<link rel="stylesheet" type="text/css" href="css/style.min.css">
-<link rel="stylesheet" type="text/css" href="css/mobile.min.css">
 <script src="js/jquery.min.js" type="text/javascript"></script>
 <script src="js/mobile.js" type="text/javascript"></script>
+<script src="/ReceipeFood_2.0/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>
+<script src="/ReceipeFood_2.0/js/bootstrap.min.js"></script>
+<script src="/ReceipeFood_2.0/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.js"></script>
+    <script type="text/javascript">
+    $('.textarea').wysihtml5();
+    </script>
 </body>
 </html>

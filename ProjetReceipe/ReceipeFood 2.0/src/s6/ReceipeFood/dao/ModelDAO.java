@@ -397,7 +397,7 @@ public class ModelDAO {
 	    						String.class);
 	    					m.invoke(base, r.invoke(res, list));
 	    			}
-	        	}else {
+	        	}else {	
 	        		if(field.getType().isInterface()){
 	        			BaseModel child = (BaseModel)this.getListType(field).newInstance();
 	    				Method m = objet.getClass().getMethod(

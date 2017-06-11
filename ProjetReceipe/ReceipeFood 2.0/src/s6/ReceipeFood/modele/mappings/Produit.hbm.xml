@@ -14,11 +14,19 @@
         </id>
         <property name="nom" column="nomproduit" type="string"/>
         <property name="etape" column="etape" type="string"/>
+        <property name="photo" column="photo" type="string"/>
+        <property name="dateAjout" column="dateajout" type="java.sql.Timestamp" insert="false"/>
+		  
         <many-to-one name="categorie" class="s6.ReceipeFood.modele.Categorie" column="idcategorie" lazy="proxy" not-null="true" fetch="select"/>
         <many-to-one name="createur" class="s6.ReceipeFood.modele.Utilisateur" column="idutilisateur" lazy="proxy" not-null="true" fetch="select"/>
-        <bag name="ltComposition" cascade="save-update" fetch="select" inverse="true">
+        <bag name="ltComposition" cascade="save-update,delete-orphan" fetch="select" inverse="true" lazy="false">
 	         <key column="idproduit" not-null="true"/>
 	         <one-to-many class="s6.ReceipeFood.modele.Composition"/>
         </bag>
+        
+          <union-subclass name="s6.ReceipeFood.modele.ProduitVue" table="produitview"> 
+	        <property name="nomCreateur" column="nomcreateur" type="string"/>
+	        <property name="nomCategorie" column="nomcategorie" type="string"/>
+		  </union-subclass>  
     </class>
 </hibernate-mapping>

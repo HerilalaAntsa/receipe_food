@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- Use this file to deploy some handlers/chains and services      --><!-- Two ways to do this:                                           --><!--   java org.apache.axis.client.AdminClient deploy.wsdd          --><!--      after the axis server is running                          --><!-- or                                                             --><!--   java org.apache.axis.utils.Admin client|server deploy.wsdd   --><!--      from the same directory that the Axis engine runs         --><deployment xmlns="http://xml.apache.org/axis/wsdd/" xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+  <!-- Services from WebServiceCategorieService WSDL service -->
+
+  <service name="WebServiceCategorie" provider="java:RPC" style="wrapped" use="literal">
+      <parameter name="wsdlTargetNamespace" value="http://service.ReceipeFood.s6"/>
+      <parameter name="wsdlServiceElement" value="WebServiceCategorieService"/>
+      <parameter name="schemaQualified" value="http://modele.ReceipeFood.s6,http://service.ReceipeFood.s6"/>
+      <parameter name="wsdlServicePort" value="WebServiceCategorie"/>
+      <parameter name="className" value="s6.ReceipeFood.service.WebServiceCategorie"/>
+      <parameter name="wsdlPortType" value="WebServiceCategorie"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <operation xmlns:operNS="http://service.ReceipeFood.s6" name="update" qname="operNS:update" soapAction="">
+        <parameter xmlns:pns="http://service.ReceipeFood.s6" xmlns:tns="http://modele.ReceipeFood.s6" qname="pns:categorie" type="tns:Categorie"/>
+      </operation>
+      <operation xmlns:operNS="http://service.ReceipeFood.s6" name="save" qname="operNS:save" soapAction="">
+        <parameter xmlns:pns="http://service.ReceipeFood.s6" xmlns:tns="http://modele.ReceipeFood.s6" qname="pns:categorie" type="tns:Categorie"/>
+      </operation>
+      <operation xmlns:operNS="http://service.ReceipeFood.s6" xmlns:retNS="http://service.ReceipeFood.s6" xmlns:rtns="http://service.ReceipeFood.s6" xmlns:tns="http://service.ReceipeFood.s6" name="findAll" qname="operNS:findAll" returnQName="retNS:findAllReturn" returnType="rtns:ArrayOf_xsd_anyType" returnItemQName="tns:item" soapAction="">
+      </operation>
+      <operation xmlns:operNS="http://service.ReceipeFood.s6" xmlns:retNS="http://service.ReceipeFood.s6" xmlns:rtns="http://modele.ReceipeFood.s6" name="findById" qname="operNS:findById" returnQName="retNS:findByIdReturn" returnType="rtns:Categorie" soapAction="">
+        <parameter xmlns:pns="http://service.ReceipeFood.s6" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:id" type="tns:string"/>
+      </operation>
+      <parameter name="allowedMethods" value="findById save update findAll"/>
+
+      <typeMapping xmlns:ns="http://service.ReceipeFood.s6" qname="ns:&gt;save" type="java:s6.ReceipeFood.service.Save" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
+      <typeMapping xmlns:ns="http://service.ReceipeFood.s6" qname="ns:&gt;update" type="java:s6.ReceipeFood.service.Update" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
+      <typeMapping xmlns:ns="http://service.ReceipeFood.s6" qname="ns:&gt;findById" type="java:s6.ReceipeFood.service.FindById" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
+      <typeMapping xmlns:ns="http://service.ReceipeFood.s6" qname="ns:&gt;findAll" type="java:s6.ReceipeFood.service.FindAll" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
+      <typeMapping xmlns:ns="http://service.ReceipeFood.s6" qname="ns:&gt;saveResponse" type="java:s6.ReceipeFood.service.SaveResponse" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
+      <typeMapping xmlns:ns="http://service.ReceipeFood.s6" qname="ns:&gt;findAllResponse" type="java:s6.ReceipeFood.service.FindAllResponse" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
+      <arrayMapping xmlns:ns="http://service.ReceipeFood.s6" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema" qname="ns:ArrayOf_xsd_anyType" type="java:java.lang.Object[]" innerType="cmp-ns:anyType" encodingStyle=""/>
+      <typeMapping xmlns:ns="http://service.ReceipeFood.s6" qname="ns:&gt;findByIdResponse" type="java:s6.ReceipeFood.service.FindByIdResponse" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
+      <typeMapping xmlns:ns="http://modele.ReceipeFood.s6" qname="ns:Categorie" type="java:s6.ReceipeFood.modele.Categorie" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
+      <typeMapping xmlns:ns="http://service.ReceipeFood.s6" qname="ns:&gt;updateResponse" type="java:s6.ReceipeFood.service.UpdateResponse" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
+      <typeMapping xmlns:ns="http://modele.ReceipeFood.s6" qname="ns:BaseModel" type="java:s6.ReceipeFood.modele.BaseModel" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
+  </service>
+</deployment>

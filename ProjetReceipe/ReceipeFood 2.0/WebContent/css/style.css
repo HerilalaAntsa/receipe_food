@@ -57,7 +57,6 @@ img {
 }
 #header div {
 	margin: 0 auto;
-	max-width: 940px;
 	overflow: hidden;
 	padding: 41px 10px 27px;
 }
@@ -80,7 +79,6 @@ img {
 	margin: 0 auto;
 	padding: 17px 0 0;
 	text-align: center;
-	width: 513px;
 }
 #header div ul li {
 	display: inline-block;
@@ -586,7 +584,7 @@ img {
 	text-align: left;
 	text-transform: uppercase;
 }
-#body div.blog .featured ul li div span {
+#body div.blog .featured ul li div  {
 	color: #7A6666;
 	display: block;
 	font-family: roboto-regular-webfont;

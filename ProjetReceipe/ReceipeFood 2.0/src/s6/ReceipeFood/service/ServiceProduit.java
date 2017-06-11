@@ -11,10 +11,12 @@ import s6.ReceipeFood.dao.CategorieDAO;
 import s6.ReceipeFood.dao.HibernateDao;
 import s6.ReceipeFood.dao.ProduitDAO;
 import s6.ReceipeFood.modele.BaseModel;
+import s6.ReceipeFood.modele.BaseModelePagination;
 import s6.ReceipeFood.modele.Categorie;
 import s6.ReceipeFood.modele.Composant;
 import s6.ReceipeFood.modele.Composition;
 import s6.ReceipeFood.modele.Produit;
+import s6.ReceipeFood.modele.ProduitVue;
 import s6.ReceipeFood.modele.Unite;
 import s6.ReceipeFood.modele.Utilisateur;
 
@@ -31,15 +33,64 @@ public class ServiceProduit {
 		return SingletonHolder.instance;
 	}
 	
-	ProduitDAO produitDAO = new ProduitDAO();
+	private BaseService base; // = BaseService.getInstance();
 	
-	public List<BaseModel> find() throws Exception{
-		HibernateDao hibernateDao = new HibernateDao();
-		return hibernateDao.findAll(new Produit());
+	public BaseService getBase() {
+		return base;
+	}
+
+	public void setBase(BaseService baseService) {
+		this.base = baseService;
 	}
 	
+	public List<ProduitVue> find() throws Exception{
+		List<ProduitVue> ltProduit = new Vector<ProduitVue>();
+		List<BaseModel> liste = this.getBase().getAll(new ProduitVue());
+		for(BaseModel b : liste){
+			ltProduit.add((ProduitVue) b);
+		}
+		return ltProduit;
+	}
+	
+	public BaseModelePagination findByCategorie(String id,int page) throws Exception{
+		BaseModelePagination base = new BaseModelePagination(ProduitVue.class, 5, page);
+		if(id.equalsIgnoreCase("TOUS")){
+			this.getBase().getDao().findAll(base);
+		}else{
+			Categorie cat = new Categorie();
+			cat.setId(Integer.parseInt(id));
+			this.getBase().getDao().findAllByCategorie(cat, base);
+		}
+		return base;
+	}
+	
+	public BaseModelePagination rechercheByComposant(String liste,int page) throws Exception{
+		try {
+			String[] lt = liste.split(";");
+			List<Composant> listeComposant = new Vector<Composant>();
+			for(String s : lt){
+				listeComposant.add(this.getBase().getDao().findComposant(new Composant(), s.trim(), true).get(0));
+			}
+			BaseModelePagination base = new BaseModelePagination(ProduitVue.class, 5, page);
+			this.getBase().getDao().rechercheByComposant(listeComposant,base);
+			return base;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+	
+//	public List<Produit> find() throws Exception{
+//		List<Produit> ltProduit = new Vector<Produit>();
+//		List<BaseModel> liste = HibernateDao.getInstance().findAll(new Produit());
+//		for(BaseModel b : liste){
+//			ltProduit.add((Produit) b);
+//		}
+//		return ltProduit;
+//	}
+	
 	public Produit findById(int i) throws Exception{
-		return produitDAO.findById(i);
+		return (Produit) this.getBase().get(String.valueOf(i),new Produit());
 	}
 	
 	public Produit nouveauProduit(int idCategorie,Utilisateur utilisateur,String nomProduit,String etape){
@@ -51,15 +102,15 @@ public class ServiceProduit {
 		return p;
 	}
 	
-	public void saveProduit(List<Composant> ltComposant, float[] quantite, Unite[] unite, Produit produit){
+	public void saveProduit(List<Composant> ltComposant, List<String> quantite, List<String> unite, Produit produit){
 		List<Composition> ltComposition = new Vector<Composition>();
-		
+
+		try{
 		for(int i=0;i<ltComposant.size();i++){
-			ltComposition.add(new Composition(produit, ltComposant.get(i), quantite[i], unite [i]));
+			ltComposition.add(new Composition(produit, ltComposant.get(i), Float.valueOf(quantite.get(i)), Unite.valueOf(unite.get(i))));
 		}
 		produit.setLtComposition(ltComposition);
-		try{
-			BaseService.getInstance().save(produit);
+			this.getBase().save(produit);
 		}catch(Exception e){
 			e.printStackTrace();
 			System.out.println(e.getMessage());

@@ -1,9 +1,12 @@
 package s6.ReceipeFood.utilitaire;
 import java.security.Key;
+import java.text.DateFormat;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.Date;
+import java.util.Locale;
 
 import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
@@ -105,5 +108,8 @@ public class StringUtil {
     public static String formatDateTime(LocalDateTime local){
     	return DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL).format(local.toLocalDate())+" \u00e0 "+
     			DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM).format(local.toLocalTime());
+    }
+    public static String formatDateSimple(Date local){
+    	return DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.SHORT, Locale.FRANCE).format(local);
     }
 }

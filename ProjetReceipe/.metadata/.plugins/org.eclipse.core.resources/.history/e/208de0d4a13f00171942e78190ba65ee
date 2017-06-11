@@ -1,0 +1,23 @@
+package s6.ReceipeFood.service;
+
+import java.util.List;
+
+import s6.ReceipeFood.modele.Categorie;
+
+public class WebServiceCategorie {
+
+	public WebServiceCategorie(){}
+	
+	public List<Categorie> findAll() throws Exception{
+		return ServiceCategorie.getInstance().find();		
+	}
+	public Categorie findById(String id) throws Exception{
+		return (Categorie)BaseService.getInstance().get(id,new Categorie());
+	}
+	public void update(Categorie categorie) throws Exception{
+		BaseService.getInstance().update(categorie);
+	}
+	public void save(Categorie categorie) throws Exception{
+		BaseService.getInstance().save(categorie);
+	}
+}

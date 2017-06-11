@@ -21,34 +21,24 @@ public class ServiceUtilisateur {
 		return SingletonHolder.instance;
 	}
 	
-	UtilisateurDAO utilisateurDAO = new UtilisateurDAO();
+	private BaseService base;
+	
+	public BaseService getBase() {
+		return base;
+	}
 
-	public  List<Utilisateur> find() throws Exception{
-		return utilisateurDAO.findAll();
+	public void setBase(BaseService baseService) {
+		this.base = baseService;
 	}
-	
-	public  Utilisateur findById(int i) throws Exception{
-		return utilisateurDAO.findById(i);
-	}
-	
+
 	public Utilisateur login(Utilisateur model) throws Exception{
-		HibernateDao hibernateDao = new HibernateDao();
-		return hibernateDao.login(model);
+		return this.getBase().getDao().login(model);
 	}
 	
-	public static void inscription(String nom, String prenom, String dateNaissance, String sexe, String email, String telephone, String password,String confirmpassword, String adresse)throws Exception{
+	public void inscription(Utilisateur u)throws Exception{
 		try {
-			HibernateDao hibernateDao = new HibernateDao();
 			Utilisateur p = new Utilisateur();
-			p.setNom(nom);
-			p.setPrenom(prenom);
-			p.setDateNaissance(Date.valueOf(dateNaissance));
-			p.setSexe(sexe);
-			p.setEmail(email);
-			p.setPassword(password, confirmpassword);
-			p.setAdresse(adresse);
-			p.setTelephone(telephone);
-			hibernateDao.save(p);
+			this.getBase().save(u);
 		} catch (NullPointerException e) {
 			e.printStackTrace();
 			throw new Exception("Veuillez remplir enti\u00e8rement le formulaire pour pouvoir vous inscrire !");

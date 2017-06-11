@@ -8,8 +8,10 @@ import org.hibernate.exception.ConstraintViolationException;
 
 import s6.ReceipeFood.dao.ComposantDAO;
 import s6.ReceipeFood.dao.HibernateDao;
+import s6.ReceipeFood.modele.BaseModel;
 import s6.ReceipeFood.modele.Composant;
 import s6.ReceipeFood.modele.Composition;
+import s6.ReceipeFood.modele.Produit;
 
 public class ServiceComposant {
 	public ServiceComposant() {}
@@ -24,29 +26,44 @@ public class ServiceComposant {
 		return SingletonHolder.instance;
 	}
 	
-	ComposantDAO composantDAO = new ComposantDAO();
+	private BaseService base; // = BaseService.getInstance();
+	
+	public BaseService getBase() {
+		return base;
+	}
+
+	public void setBase(BaseService baseService) {
+		this.base = baseService;
+	}
 	
 	public List<Composant> find() throws Exception{
-		return this.composantDAO.findAll();
+		List<Composant> ltModel = new Vector<Composant>();
+		List<BaseModel> liste = this.getBase().getAll(new Composant());
+		for(BaseModel b : liste){
+			ltModel.add((Composant) b);
+		}
+		return ltModel;
 	}
 	
 	public Composant findById(int i) throws Exception{
-		return this.composantDAO.findById(i);
+		return (Composant) this.getBase().get(String.valueOf(i), new Composant());
 	}  
 	
 	public List<Composant> creerListeComposant(String liste) throws Exception{
 		List<Composant> ltComposant = new Vector<Composant>();
 		String [] lt = liste.split(";");
 		for(String s : lt){
+			s = s.trim();
 			Composant c = new Composant();
 			try{
-				c = BaseService.getInstance().getDao().findComposant(c, s);
+				List<Composant> ltC = this.getBase().getDao().findComposant(c, s, false);
+				c = ltC.get(0);
 			}catch(Exception e){
 				e.printStackTrace();
 			}
-			if(c.getId() == 0){
+			if(c.getId()==0){
 				c.setNom(s);
-				BaseService.getInstance().save(c);
+				this.getBase().save(c);
 			}
 			ltComposant.add(c);
 		}
@@ -55,9 +72,10 @@ public class ServiceComposant {
 	
 	public void save(Composant composant) throws Exception{
 		try{
-			BaseService.getInstance().save(composant);
+			this.getBase().save(composant);
 		}catch(ConstraintViolationException e){
 			return;
 		}
 	}
+	
 }

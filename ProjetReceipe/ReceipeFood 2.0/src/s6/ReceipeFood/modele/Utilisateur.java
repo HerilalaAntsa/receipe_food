@@ -12,15 +12,16 @@ import java.util.Locale;
 import s6.ReceipeFood.utilitaire.StringUtil;
 
 public class Utilisateur extends BaseModel{
-	String nom;
-	String prenom;
+	String nom = "";
+	String prenom = "";
 	Date dateNaissance;
-	String sexe;
-	String telephone;
-	String adresse;
-	String email;
-	String password;
-	String photo;
+	String sexe = "";
+	String telephone = "";
+	String adresse = "";
+	String email = "";
+	String password = "";
+	String photo = "";
+	String confirmPassword = "";
 	
 	public Utilisateur() {}
 	
@@ -81,7 +82,7 @@ public class Utilisateur extends BaseModel{
 	}
 	public void setDateNaissance(String dateNaissance) throws Exception{
 		try{
-			setDateNaissance(java.sql.Date.valueOf(LocalDate.parse(dateNaissance)));
+			setDateNaissance(java.sql.Date.valueOf(dateNaissance));
 		} catch (DateTimeParseException e) {
 			try{
 				DateTimeFormatter format = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("d MMMM, uuuu").toFormatter(Locale.FRANCE);
@@ -135,6 +136,17 @@ public class Utilisateur extends BaseModel{
 		this.password = password;
 	}
 	
+	public String getConfirmPassword() {
+		return confirmPassword;
+	}
+
+	public void setConfirmPassword(String confirmPassword) throws Exception {
+		if(!confirmPassword.equals(this.getPassword())){
+			throw new Exception("Veuillez reconfirmer votre mot de passe. Ils ne correspondent pas.");
+		}
+		this.confirmPassword = confirmPassword;
+	}
+
 	public void setPassword(String password, String confirmpassword) throws Exception {
 		if(password.compareTo(confirmpassword)!=0){
 			throw new Exception("Veuillez reconfirmer votre mot de passe. Ils ne correspondent pas.");

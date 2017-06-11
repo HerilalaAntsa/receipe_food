@@ -7,13 +7,16 @@
 				org.json.*,
 				java.sql.*" 
 %>
+<%
+Utilisateur user = (Utilisateur)session.getAttribute("user");
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Hello <% out.println(request.getAttribute("name")); %></title>
+<title>Hello World</title>
 </head>
 <body>
-Hello <% out.println(request.getAttribute("name")); %>
+Hello <% out.println(user.getNom()); %>
 </body>
 </html>

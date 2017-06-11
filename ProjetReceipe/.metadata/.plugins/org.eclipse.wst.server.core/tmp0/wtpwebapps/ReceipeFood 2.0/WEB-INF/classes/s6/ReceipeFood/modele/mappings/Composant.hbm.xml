@@ -14,7 +14,7 @@
         </id>
         <property name="nom" column="nomcomposant" type="string" unique="true" unique-key="key"/>
         
-    	<bag name="ltComposition" cascade="delete-orphan" table="composition" fetch="select" inverse="true">
+    	<bag name="ltComposition" cascade="delete-orphan" table="composition" fetch="select" inverse="true" lazy="false">
 	         <key column="idcomposant" not-null="true"/>
 	         <one-to-many class="s6.ReceipeFood.modele.Composition"/>
         </bag>

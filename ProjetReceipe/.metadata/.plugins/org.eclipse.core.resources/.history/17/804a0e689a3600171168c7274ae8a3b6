@@ -1,0 +1,89 @@
+package s6.ReceipeFood.service;
+
+import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.List;
+import java.util.Vector;
+
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+import s6.ReceipeFood.dao.CategorieDAO;
+import s6.ReceipeFood.dao.HibernateDao;
+import s6.ReceipeFood.dao.ProduitDAO;
+import s6.ReceipeFood.modele.BaseModel;
+import s6.ReceipeFood.modele.Categorie;
+import s6.ReceipeFood.modele.Composant;
+import s6.ReceipeFood.modele.Composition;
+import s6.ReceipeFood.modele.Produit;
+import s6.ReceipeFood.modele.Unite;
+import s6.ReceipeFood.modele.Utilisateur;
+
+public class ServiceProduit {
+	public ServiceProduit() {}
+	
+	private static class SingletonHolder
+	{		
+		private final static ServiceProduit instance = new ServiceProduit();
+	}
+ 
+	public static ServiceProduit getInstance()
+	{
+		return SingletonHolder.instance;
+	}
+	
+	private BaseService base;
+	
+	public BaseService getBase() {
+		return base;
+	}
+
+	public void setBase(BaseService baseService) {
+		this.base = baseService;
+	}
+	
+	public List<Produit> find() throws Exception{
+		List<Produit> ltProduit = new Vector<Produit>();
+		List<BaseModel> liste = this.getBase().getAll(new Produit());
+		for(BaseModel b : liste){
+			ltProduit.add((Produit) b);
+		}
+		return ltProduit;
+	}
+	
+//	public List<Produit> find() throws Exception{
+//		List<Produit> ltProduit = new Vector<Produit>();
+//		List<BaseModel> liste = HibernateDao.getInstance().findAll(new Produit());
+//		for(BaseModel b : liste){
+//			ltProduit.add((Produit) b);
+//		}
+//		return ltProduit;
+//	}
+	
+	public Produit findById(int i) throws Exception{
+		return (Produit) this.getBase().get(String.valueOf(i),new Produit());
+	}
+	
+	public Produit nouveauProduit(int idCategorie,Utilisateur utilisateur,String nomProduit,String etape){
+		Produit p = new Produit();
+		p.setCategorie(new Categorie(idCategorie,""));
+		p.setCreateur(utilisateur);
+		p.setNom(nomProduit);
+		p.setEtape(etape);
+		return p;
+	}
+	
+	public void saveProduit(List<Composant> ltComposant, List<String> quantite, List<String> unite, Produit produit){
+		List<Composition> ltComposition = new Vector<Composition>();
+
+		try{
+		for(int i=0;i<ltComposant.size();i++){
+			ltComposition.add(new Composition(produit, ltComposant.get(i), Float.valueOf(quantite[i]), Unite.valueOf(unite [i])));
+		}
+		produit.setLtComposition(ltComposition);
+			BaseService.getInstance().save(produit);
+		}catch(Exception e){
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
+	}
+}

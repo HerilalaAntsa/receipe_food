@@ -7,6 +7,7 @@
 				org.json.*,
 				java.sql.*" 
 %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
 <!doctype html>
 <html>
 <head>
@@ -29,6 +30,46 @@
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="images/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="/ReceipeFood_2.0/css/style.css" charset="utf-8">
+<link rel="stylesheet" type="text/css" href="/ReceipeFood_2.0/css/mobile.css">
+    <link href="/ReceipeFood_2.0/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" type="text/css" href="/ReceipeFood_2.0/css/bootstrap.min.css">
+    <meta charset="utf-8">
 </head>
 <body>
-<div id="page">
+<div id="page" class="container">
+		<div class="row">
+			<div class="col-sm-offset-10 col-sm-3">
+				<a href="logOut"><span class="glyphicon glyphicon-log-out"></span> Deconnexion</a>
+			</div>
+		</div>
+		<div id="header" class="row">
+			<div>
+				<a href="accueil" class="logo"><img src="images/logo.png" alt=""></a>
+				<ul id="navigation">
+					<li>
+						<a href="accueil">Accueil</a>
+					</li>
+<!-- 					<li class="menu">
+						<a href="about.html">About</a>
+						<ul id="selected" class="primary">
+							<li class="">
+								<a href="product.html">Product</a>
+							</li>
+						</ul>
+					</li> -->
+					<li class="menu">
+						<a href="listeRecette">Les recettes</a>
+<!-- 						<ul class="secondary">
+							<li>
+								<a href="singlepost.html">Single post</a>
+							</li>
+						</ul> -->
+					</li>
+					<li class="menu">
+						<a href="ajoutRecette">nouvelle recette</a>
+					</li>
+				</ul>
+			</div>
+		</div>

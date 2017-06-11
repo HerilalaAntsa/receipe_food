@@ -17,9 +17,25 @@
         <property name = "dao" ref = "hibernateDao"/>
     </bean>
     
-    <!-- <bean id = "accesCompteService" class = "s6.patisserie.services.AccesCompteServices">
-        <property name = "hibernateDao" ref = "hibernateDao"/>
-    </bean>-->
+    <bean id = "utilisateurService" class = "s6.ReceipeFood.service.ServiceUtilisateur">
+        <property name = "base" ref = "baseService"/>
+    </bean>
+    
+    <bean id = "produitService" class = "s6.ReceipeFood.service.ServiceProduit">
+        <property name = "base" ref = "baseService"/>
+    </bean>
+    
+    <bean id = "composantService" class = "s6.ReceipeFood.service.ServiceComposant">
+        <property name = "base" ref = "baseService"/>
+    </bean>
+    
+    <bean id = "categorieService" class = "s6.ReceipeFood.service.ServiceCategorie">
+        <property name = "base" ref = "baseService"/>
+    </bean>
+    
+    <bean id = "adminService" class = "s6.ReceipeFood.service.ServiceAdministrateur">
+        <property name = "base" ref = "baseService"/>
+    </bean>
    
 <!--    <bean id =" helloIndia" class = "mg.itu.s68a.main.HelloIndia" parent = "helloWorld">
         <property name = "message1" value = "Hello India!"/>

@@ -1,0 +1,52 @@
+
+<%@ include file="../template/header.jsp" %>
+
+<%@ include file="../template/sidebar.jsp" %>
+<%
+BaseModelePagination base = (BaseModelePagination)request.getAttribute("liste");
+int numeroPage = (int)request.getAttribute("page"); 
+%>
+
+<div class="">
+    <h1><strong>Liste des billets dispo</strong></h1><hr>
+</div>
+
+<div class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-10">
+        <?php
+        } catch (Exception $e) {
+            ?>
+            <div class="well"><p><?php echo $e->getMessage() ?></p></div>
+            <?php
+        }
+        ?>
+        <div class="row">
+            <div class="well">
+                <h1>Ajouter categorie</h1><hr>
+                <div class="well">
+                    <p>
+                        un fichier "categorie.html" va être créé ou recréé lors de l'ajout d'une nouvelle categorie (fichier cache).
+                    </p>
+                </div>
+
+                <form action="#" method="post" id="formulaire">
+
+                    <div class="form-group">
+                        <label for="titre">Nom de la categorie :</label>
+                        <input class="form-control"  name="nom"><p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="texte">Description :</label>
+                        <textarea name="description" class="form-control textarea" rows="4"></textarea>
+                    </div>
+
+                    <button id="ajoutCategorie" class="button" type="submit" value="ajoutCategorie" name="ajoutCategorie" style="vertical-align:middle"><span>Enregistrer </span></button>
+                </form>
+
+        </div>
+    </div>
+</div>
+
+<%@ include file="../template/footer.jsp" %>

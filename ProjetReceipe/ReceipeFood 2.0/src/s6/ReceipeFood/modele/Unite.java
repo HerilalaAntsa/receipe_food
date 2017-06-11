@@ -4,8 +4,10 @@ public enum Unite {
     kilogramme("kilogramme","kg"),
     gramme("gramme","g"),
     litre("litre","l"),
+    millilitre("millilitre","l"),
     piece("piece","pc."),
-	cuillere("cuillere","c");
+	cuillere("cuillere","c"),
+	gousse("gousse","gousse");
 	
     String nom;
     String symbole;

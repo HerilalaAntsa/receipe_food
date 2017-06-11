@@ -2,3 +2,27 @@
 1494334624062	Rename resource 'Login.php'
 1494335278309	Rename resource 'header.php'
 1494335285430	Rename resource 'footer.php'
+1494399244764	Rename type 'LoginAction'
+1494403607405	Move 8 resources to 'css'
+1494403624046	Move 5 resources to 'fonts'
+1494403638495	Move 3 resources to 'js'
+1494403645450	Delete element
+1494404987333	Rename resource 'signin.html'
+1494415510206	Rename resource 'index.html'
+1494416173285	Delete element
+1494483305703	Move 'listeProduit.jsp' to 'WebContent'
+1494516805957	Rename resource 'ajoutrecette.jsp'
+1494522040183	Rename resource 'NewFile.jsp'
+1494523303345	Delete element
+1494595578604	Rename resource 'plugings'
+1494606202685	Rename resource 'login.php'
+1494606224891	Delete element
+1494608030162	Rename resource 'listeBillet.php'
+1494608074367	Delete element
+1494608219641	Rename resource 'header.php'
+1494608228532	Rename resource 'footer.php'
+1494608238481	Rename resource 'sidebar.php'
+1494608263536	Delete element
+1494608295296	Delete element
+1494608320352	Delete element
+1494613479187	Rename resource 'listeCategorie.jsp'

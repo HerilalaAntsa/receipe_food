@@ -1,0 +1,54 @@
+
+<%@ include file="../template/header.jsp" %>
+
+<%@ include file="../template/sidebar.jsp" %>
+<%
+BaseModelePagination base = (BaseModelePagination)request.getAttribute("liste");
+int numeroPage = (int)request.getAttribute("page"); 
+%>
+<div class="row">
+    <div class="col-sm-3"></div>
+    <div class="col-sm-9">
+        <div class="row">
+
+                    <div class="row well">
+                        <h2>LISTE DES CATEGORIE</h2><hr>
+                        <table class="table table-striped table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th>Numéro</th>
+                                <th>nom</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <% for(Categorie c : (List<Categorie>)base.getListe()){ %>
+                                <tr>
+                                    <td><% out.print(c.getId()); %></td>
+                                    <td><% out.print(c.getNom()); %></td>
+
+                                    <td class="btn-group">
+                                        <a href="Categorie/Modifier?idCategorie=<% out.print(c.getId()); %>" class="btn btn-primary" data-toggle="modal" data-target="#modifier">
+                                            <span class="glyphicon glyphicon-edit"></span>
+                                        </a>
+                                        
+                                        <a href="Supprimer?id=<% out.print(c.getId()); %>" class="btn btn-primary" data-toggle="modal" data-target="#supprimer">
+                                            <span class="glyphicon glyphicon-trash"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            <% } %>
+                            </tbody>
+                        </table>
+					<ul class="pagination">
+						<% for(int i = 0; i<base.getNombrePage();i++){ %>
+							<li class="<% if(i == numeroPage) out.print("active"); %>"><a href="listeRecette?page=<% out.print(i+1); %>"><% out.print(i+1); %></a></li>
+						<% } %>
+					</ul>
+                    </div>
+            </div>
+  
+    </div>
+</div>
+
+<%@ include file="../template/footer.jsp" %>

@@ -1,9 +1,12 @@
 package s6.ReceipeFood.service;
 
 import java.util.List;
+import java.util.Vector;
 
 import s6.ReceipeFood.dao.CategorieDAO;
+import s6.ReceipeFood.modele.BaseModel;
 import s6.ReceipeFood.modele.Categorie;
+import s6.ReceipeFood.modele.Produit;
 
 public class ServiceCategorie {
 	public ServiceCategorie() {}
@@ -18,13 +21,22 @@ public class ServiceCategorie {
 		return SingletonHolder.instance;
 	}
 	
-	CategorieDAO categorieDAO = new CategorieDAO();
+	private BaseService base;
 	
-	public List<Categorie> find() throws Exception{
-		return this.categorieDAO.findAll();
+	public BaseService getBase() {
+		return base;
+	}
+
+	public void setBase(BaseService baseService) {
+		this.base = baseService;
 	}
 	
-	public Categorie findById(int i) throws Exception{
-		return this.categorieDAO.findById(i);
+	public List<Categorie> find() throws Exception{
+		List<Categorie> ltProduit = new Vector<Categorie>();
+		List<BaseModel> liste = this.getBase().getAll(new Categorie());
+		for(BaseModel b : liste){
+			ltProduit.add((Categorie) b);
+		}
+		return ltProduit;
 	}
 }
